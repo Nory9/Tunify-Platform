@@ -13,7 +13,7 @@ Tunify Platform is a music streaming application built using ASP.NET Core and En
 
 The database schema is represented in the provided ER diagram. The schema includes the following entities:
 
-![ERD]()
+![ERD](https://github.com/Nory9/Tunify-Platform/blob/Tunify-Platform/Tunify%20Platform/Tunify.png?raw=true)
 
 1. **Users**: Stores user information.
 2. **Subscriptions**: Stores subscription types and prices.
