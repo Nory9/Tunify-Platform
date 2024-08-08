@@ -1,33 +1,49 @@
-﻿using Tunify_Platform.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Tunify_Platform.Data;
+using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform.Repositories.Services
 {
     public class ArtistsServices : IArtists
     {
-        public Task<User> AddArtist(Artists Artist)
+        private readonly AppDbContext _context;
+        public ArtistsServices(AppDbContext context) { 
+        
+            _context = context;
+        }
+        public async Task<Artists> AddArtist(Artists artist)
         {
-            throw new NotImplementedException();
+            _context.Artists.Add(artist);  
+            await _context.SaveChangesAsync();
+            return artist;
         }
 
-        public Task<User> DeleteArtist(Artists Artist)
+        public async Task<Artists> DeleteArtist(Artists Artist)
         {
-            throw new NotImplementedException();
+            _context.Artists.Remove(Artist);
+            await _context.SaveChangesAsync();
+            return Artist;
         }
 
-        public Task<IEnumerable<Artists>> GetAllArtists()
+        public async Task<IEnumerable<Artists>> GetAllArtists()
         {
-            throw new NotImplementedException();
+            var AllArtists = await _context.Artists.ToListAsync();
+            return AllArtists;
         }
 
-        public Task<User> GetArtist(int id)
+        public async Task<Artists> GetArtist(int id)
         {
-            throw new NotImplementedException();
+            var artist = await _context.Artists.FindAsync(id);
+            return artist;
         }
 
-        public Task<User> UpdateArtist(Artists Artist)
+        public async Task<Artists> UpdateArtist(int id, Artists Artist)
         {
-            throw new NotImplementedException();
+            var existingArtist = await _context.Artists.FindAsync(id);
+            existingArtist=Artist;
+            await _context.SaveChangesAsync();
+            return existingArtist;
         }
     }
 }

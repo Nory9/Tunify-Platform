@@ -5,9 +5,9 @@ namespace Tunify_Platform.Repositories.Interfaces
     public interface IArtists
     {
         Task<IEnumerable<Artists>> GetAllArtists();
-        Task<User> GetArtist(int id);
-        Task<User> AddArtist(Artists Artist);
-        Task<User> UpdateArtist(Artists Artist);
-        Task<User> DeleteArtist(Artists Artist);
+        Task<Artists> GetArtist(int id);
+        Task<Artists> AddArtist(Artists Artist);
+        Task<Artists> UpdateArtist(int id, Artists Artist);
+        Task<Artists> DeleteArtist(Artists Artist);
     }
 }

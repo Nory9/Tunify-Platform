@@ -1,33 +1,53 @@
-﻿using Tunify_Platform.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Tunify_Platform.Data;
+using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform.Repositories.Services
 {
-    public class PlaylistsServices : IPlayLists
+    public class PlaylistsServices : IPlaylists
     {
-        public Task<Playlists> AddPlaylist(Playlists Playlist)
+        private readonly AppDbContext _context;
+
+        public PlaylistsServices(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Playlists> DeletePlaylist(Playlists Playlist)
+        public async Task<Playlists> AddPlaylist(Playlists Playlist)
         {
-            throw new NotImplementedException();
+            _context.Playlists.Add(Playlist);
+            await _context.SaveChangesAsync();
+            return Playlist;
         }
 
-        public Task<IEnumerable<Playlists>> GetAllPlaylists()
+        public async Task<Playlists> DeletePlaylist(Playlists playlist)
         {
-            throw new NotImplementedException();
+            _context.Playlists.Remove(playlist);
+            await _context.SaveChangesAsync();
+            return playlist;
         }
 
-        public Task<Playlists> GetPlaylist(int id)
+        public async Task<IEnumerable<Playlists>> GetAllPlaylists()
         {
-            throw new NotImplementedException();
+            var allPlaylists = await _context.Playlists.ToListAsync();
+            return allPlaylists;
         }
 
-        public Task<Playlists> UpdatePlaylist(Playlists Playlist)
+        public async Task<Playlists> GetPlaylist(int id)
         {
-            throw new NotImplementedException();
+            var palylist = await _context.Playlists.FindAsync(id);
+            return palylist;
         }
+
+        public async Task<Playlists> UpdatePlaylist(int id,Playlists Playlist)
+        {
+            var PlaylistToUpdate = await _context.Playlists.FindAsync(id);
+            PlaylistToUpdate = Playlist;
+            await _context.SaveChangesAsync();
+            return PlaylistToUpdate;
+
+        }
+
     }
 }

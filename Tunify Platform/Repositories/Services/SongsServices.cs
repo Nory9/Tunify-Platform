@@ -1,33 +1,53 @@
-﻿using Tunify_Platform.Models;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using Tunify_Platform.Data;
+using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform.Repositories.Services
 {
     public class SongsServices : ISongs
     {
-        public Task<Songs> AddSongs(Songs song)
+        private readonly AppDbContext _context;
+
+        public SongsServices(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Songs> DeleteSongs(Songs song)
+            public async Task<Songs> AddSong(Songs song)
         {
-            throw new NotImplementedException();
+            _context.songs.Add(song);
+            await _context.SaveChangesAsync();
+            return song;
         }
 
-        public Task<IEnumerable<Songs>> GetAllSongs()
+        public async Task<Songs> DeleteSong(Songs song)
         {
-            throw new NotImplementedException();
+            _context.songs.Remove(song);    
+            await _context.SaveChangesAsync();
+            return song;
         }
 
-        public Task<Songs> GetSongs(int id)
+        public async Task<IEnumerable<Songs>> GetAllSongs()
         {
-            throw new NotImplementedException();
+            var AllSongs = await _context.songs.ToListAsync();
+            return AllSongs;
         }
 
-        public Task<Songs> UpdateSong(Songs song)
+        public async Task<Songs> GetSong(int id)
         {
-            throw new NotImplementedException();
+            var song= await _context.songs.FindAsync(id);
+            return song;
+           
+        }
+
+        public async Task<Songs> UpdateSong(int id, Songs song)
+        {
+            var existingSong = await _context.songs.FindAsync(id);
+            existingSong = song;
+            await _context.SaveChangesAsync();
+            return existingSong;
         }
     }
 }
