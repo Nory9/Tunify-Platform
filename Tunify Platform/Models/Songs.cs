@@ -8,6 +8,10 @@
         public string Title { get; set; }
         public string Genre { get; set; }
         public string Duration { get; set; }
+
+        public virtual ICollection<PlaylistSongs> PlaylistSongs { get; set; }
+
+        public virtual Artists Artists { get; set; }    
             
        
     }

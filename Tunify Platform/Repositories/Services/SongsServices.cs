@@ -17,34 +17,34 @@ namespace Tunify_Platform.Repositories.Services
 
             public async Task<Songs> AddSong(Songs song)
         {
-            _context.songs.Add(song);
+            _context.Songs.Add(song);
             await _context.SaveChangesAsync();
             return song;
         }
 
         public async Task<Songs> DeleteSong(Songs song)
         {
-            _context.songs.Remove(song);    
+            _context.Songs.Remove(song);    
             await _context.SaveChangesAsync();
             return song;
         }
 
         public async Task<IEnumerable<Songs>> GetAllSongs()
         {
-            var AllSongs = await _context.songs.ToListAsync();
+            var AllSongs = await _context.Songs.ToListAsync();
             return AllSongs;
         }
 
         public async Task<Songs> GetSong(int id)
         {
-            var song= await _context.songs.FindAsync(id);
+            var song= await _context.Songs.FindAsync(id);
             return song;
            
         }
 
         public async Task<Songs> UpdateSong(int id, Songs song)
         {
-            var existingSong = await _context.songs.FindAsync(id);
+            var existingSong = await _context.Songs.FindAsync(id);
             existingSong = song;
             await _context.SaveChangesAsync();
             return existingSong;

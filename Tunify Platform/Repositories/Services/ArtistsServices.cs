@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Data;
 using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
@@ -44,6 +45,16 @@ namespace Tunify_Platform.Repositories.Services
             existingArtist=Artist;
             await _context.SaveChangesAsync();
             return existingArtist;
+        }
+
+
+        public async Task AddSongToArtist(int song_id,int artist_id) {
+            var artist = await _context.Artists.FindAsync(artist_id); //?
+            var song = await  _context.Songs.FindAsync(song_id);    
+            artist.Songs.Add(song);
+
+            _context.SaveChangesAsync(); 
+
         }
     }
 }
