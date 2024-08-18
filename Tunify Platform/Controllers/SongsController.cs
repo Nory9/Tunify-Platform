@@ -25,22 +25,22 @@ namespace Tunify_Platform.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Songs>>> Getsongs()
         {
-          if (_context.songs == null)
+          if (_context.Songs == null)
           {
               return NotFound();
           }
-            return await _context.songs.ToListAsync();
+            return await _context.Songs.ToListAsync();
         }
 
         // GET: api/Songs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Songs>> GetSongs(int id)
         {
-          if (_context.songs == null)
+          if (_context.Songs == null)
           {
               return NotFound();
           }
-            var songs = await _context.songs.FindAsync(id);
+            var songs = await _context.Songs.FindAsync(id);
 
             if (songs == null)
             {
@@ -86,11 +86,11 @@ namespace Tunify_Platform.Controllers
         [HttpPost]
         public async Task<ActionResult<Songs>> PostSongs(Songs songs)
         {
-          if (_context.songs == null)
+          if (_context.Songs == null)
           {
               return Problem("Entity set 'AppDbContext.songs'  is null.");
           }
-            _context.songs.Add(songs);
+            _context.Songs.Add(songs);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSongs", new { id = songs.SongsId }, songs);
@@ -100,17 +100,17 @@ namespace Tunify_Platform.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSongs(int id)
         {
-            if (_context.songs == null)
+            if (_context.Songs == null)
             {
                 return NotFound();
             }
-            var songs = await _context.songs.FindAsync(id);
+            var songs = await _context.Songs.FindAsync(id);
             if (songs == null)
             {
                 return NotFound();
             }
 
-            _context.songs.Remove(songs);
+            _context.Songs.Remove(songs);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace Tunify_Platform.Controllers
 
         private bool SongsExists(int id)
         {
-            return (_context.songs?.Any(e => e.SongsId == id)).GetValueOrDefault();
+            return (_context.Songs?.Any(e => e.SongsId == id)).GetValueOrDefault();
         }
     }
 }

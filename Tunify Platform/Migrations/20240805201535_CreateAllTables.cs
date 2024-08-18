@@ -55,18 +55,29 @@ namespace Tunify_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlaylistSongs",
-                columns: table => new
-                {
-                    PlaylistSongsId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Song_Id = table.Column<int>(type: "int", nullable: false),
-                    Playlist_Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlaylistSongs", x => x.PlaylistSongsId);
-                });
+    name: "PlaylistSongs",
+    columns: table => new
+    {
+        Song_Id = table.Column<int>(type: "int", nullable: false),
+        Playlist_Id = table.Column<int>(type: "int", nullable: false)
+    },
+    constraints: table =>
+    {
+        table.PrimaryKey("PK_PlaylistSongs", x => new { x.Song_Id, x.Playlist_Id });
+        table.ForeignKey(
+            name: "FK_PlaylistSongs_Songs_Song_Id",
+            column: x => x.Song_Id,
+            principalTable: "Songs",
+            principalColumn: "Id",
+            onDelete: ReferentialAction.Cascade);
+        table.ForeignKey(
+            name: "FK_PlaylistSongs_Playlists_Playlist_Id",
+            column: x => x.Playlist_Id,
+            principalTable: "Playlists",
+            principalColumn: "Id",
+            onDelete: ReferentialAction.Cascade);
+    });
+
 
             migrationBuilder.CreateTable(
                 name: "songs",

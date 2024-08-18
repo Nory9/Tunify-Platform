@@ -3,12 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tunify Platform", "Tunify Platform\Tunify Platform.csproj", "{5E8E846E-0A10-4956-B4E9-A639282DE35E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tunify Platform", "Tunify Platform\Tunify Platform.csproj", "{5E8E846E-0A10-4956-B4E9-A639282DE35E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65426201-8943-4B67-8488-979912B3CA55}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		..\..\..\Downloads\Tunify.png = ..\..\..\Downloads\Tunify.png
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{D6374496-4D17-4DD9-88C8-C0812A57EDD6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5E8E846E-0A10-4956-B4E9-A639282DE35E} = {5E8E846E-0A10-4956-B4E9-A639282DE35E}
 	EndProjectSection
 EndProject
 Global
@@ -21,6 +26,10 @@ Global
 		{5E8E846E-0A10-4956-B4E9-A639282DE35E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E8E846E-0A10-4956-B4E9-A639282DE35E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E8E846E-0A10-4956-B4E9-A639282DE35E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6374496-4D17-4DD9-88C8-C0812A57EDD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6374496-4D17-4DD9-88C8-C0812A57EDD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6374496-4D17-4DD9-88C8-C0812A57EDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6374496-4D17-4DD9-88C8-C0812A57EDD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Data;
 using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
@@ -47,6 +49,18 @@ namespace Tunify_Platform.Repositories.Services
             await _context.SaveChangesAsync();
             return PlaylistToUpdate;
 
+        }
+
+        // to add a song to a playlist
+        public async Task<IActionResult> AddSongsToPlaylist(int song_id, int playlist_id) { 
+        
+            PlaylistSongs playlistSongs =new PlaylistSongs() { 
+                Song_Id = song_id,  
+                Playlist_Id = playlist_id
+            };
+            await _context.PlaylistSongs.AddAsync(playlistSongs);
+            await _context.SaveChangesAsync();
+            return new JsonResult(playlistSongs); //?
         }
 
     }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Tunify_Platform.Data;
 using Tunify_Platform.Models;
+using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform.Controllers
 {
@@ -14,44 +10,38 @@ namespace Tunify_Platform.Controllers
     [ApiController]
     public class ArtistsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IArtists _artistsService;
 
-        public ArtistsController(AppDbContext context)
+        public ArtistsController(IArtists artistsService)
         {
-            _context = context;
+            _artistsService = artistsService;
         }
 
         // GET: api/Artists
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Artists>>> GetArtists()
         {
-          if (_context.Artists == null)
-          {
-              return NotFound();
-          }
-            return await _context.Artists.ToListAsync();
+            var artists = await _artistsService.GetAllArtists();
+            if (artists == null)
+            {
+                return NotFound();
+            }
+            return Ok(artists);
         }
 
         // GET: api/Artists/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Artists>> GetArtists(int id)
         {
-          if (_context.Artists == null)
-          {
-              return NotFound();
-          }
-            var artists = await _context.Artists.FindAsync(id);
-
-            if (artists == null)
+            var artist = await _artistsService.GetArtist(id);
+            if (artist == null)
             {
                 return NotFound();
             }
-
-            return artists;
+            return Ok(artist);
         }
 
         // PUT: api/Artists/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArtists(int id, Artists artists)
         {
@@ -60,65 +50,44 @@ namespace Tunify_Platform.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(artists).State = EntityState.Modified;
-
-            try
+            var updatedArtist = await _artistsService.UpdateArtist(id, artists);
+            if (updatedArtist == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArtistsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
         }
 
         // POST: api/Artists
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Artists>> PostArtists(Artists artists)
         {
-          if (_context.Artists == null)
-          {
-              return Problem("Entity set 'AppDbContext.Artists'  is null.");
-          }
-            _context.Artists.Add(artists);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetArtists", new { id = artists.ArtistsId }, artists);
+            var createdArtist = await _artistsService.AddArtist(artists);
+            return CreatedAtAction("GetArtists", new { id = createdArtist.ArtistsId }, createdArtist);
         }
 
         // DELETE: api/Artists/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteArtists(int id)
         {
-            if (_context.Artists == null)
-            {
-                return NotFound();
-            }
-            var artists = await _context.Artists.FindAsync(id);
-            if (artists == null)
+            var artist = await _artistsService.GetArtist(id);
+            if (artist == null)
             {
                 return NotFound();
             }
 
-            _context.Artists.Remove(artists);
-            await _context.SaveChangesAsync();
+            await _artistsService.DeleteArtist(artist);
 
             return NoContent();
         }
 
-        private bool ArtistsExists(int id)
+        // Custom method: Add song to artist
+        [HttpPost("{artistId}/songs/{songId}")]
+        public async Task<IActionResult> AddSongToArtist(int artistId, int songId)
         {
-            return (_context.Artists?.Any(e => e.ArtistsId == id)).GetValueOrDefault();
+            await _artistsService.AddSongToArtist(songId, artistId);
+            return NoContent();
         }
     }
 }

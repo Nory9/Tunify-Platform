@@ -6,5 +6,7 @@
         public int User_Id { get; set; }
         public string Playlists_Name { get; set; }
         public string Created_Date { get; set; }
+
+        public virtual ICollection<PlaylistSongs>  PlaylistSongs { get; set; }
     }
 }
