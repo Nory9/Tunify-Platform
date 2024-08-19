@@ -116,7 +116,43 @@ The `AppDbContext` class defines the entity sets for the application:
     - Replaced direct `DbContext` calls with calls to the repository methods.
     - Ensured each controller receives its repository through constructor injection.
     - Allowed controllers to interact with the data access layer via the repository.
+  
+
+
+## Swagger UI Integration
+
+To enhance the development experience and provide an easy way to explore and test the API endpoints, Swagger UI has been integrated into the Tunify Platform. Swagger UI offers a visual representation of the available endpoints, their request methods, parameters, and response models, making it easier for developers to understand and interact with the API.
+
+### How to Access Swagger UI
+
+Swagger UI is automatically configured and available as part of the development environment. To access the Swagger UI:
+
+1. **Run the Application**: Start the application by running it through your preferred method (e.g., Visual Studio, `dotnet run`, or using Docker).
+2. **Navigate to the Swagger UI URL**: Open your web browser and go to the following URL:
     
+    ```bash
+    
+    http://localhost:{port}/swagger
+    
+    ```
+    
+    Replace `{port}` with the port number on which your application is running. By default, this is usually `5000` or `5001` for HTTPS.
+    
+3. **Explore the API Endpoints**: Once on the Swagger UI page, you'll see a list of all the available API endpoints organized by controller. You can click on each endpoint to view more details, including the request methods (GET, POST, PUT, DELETE), parameters, and expected responses.
+
+### Using Swagger UI
+
+Swagger UI allows you to:
+
+- **View API Documentation**: Detailed information about each API endpoint is available, including the route, request parameters, response types, and example responses.
+- **Test Endpoints**: Directly interact with the API by sending requests and viewing responses. You can input parameters and execute API calls to see the real-time output.
+- **Download API Documentation**: The API documentation in Swagger UI can be downloaded in JSON or YAML format, which can be used for further integration or documentation purposes.
+
+### Benefits of Swagger UI
+
+- **Interactive Documentation**: Swagger UI provides an interactive way to explore the API, reducing the learning curve for new developers.
+- **Ease of Testing**: Quickly test and validate API endpoints without the need for external tools like Postman.
+- **Automatic Updates**: As the API evolves, the Swagger documentation automatically updates to reflect changes, ensuring it is always up-to-date.
 ## License
 
 This project is licensed under the MIT License.
