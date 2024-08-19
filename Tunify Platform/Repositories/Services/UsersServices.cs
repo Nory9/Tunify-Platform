@@ -7,7 +7,12 @@ namespace Tunify_Platform.Repositories.Services
 {
     public class UsersServices : IUser
     {
-        private readonly AppDbContext _context; 
+        private readonly AppDbContext _context;
+
+        public UsersServices(AppDbContext context) { 
+         
+            _context= context;
+        }
         public async Task<User> AddUser(User user)
         {
             _context.Users.Add(user);

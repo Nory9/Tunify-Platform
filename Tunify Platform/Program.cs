@@ -10,8 +10,22 @@ namespace Tunify_Platform
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddControllers();
             var ConnectionStringVar = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+            //// configue swagger
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Tunify",
+                    Description = "This is a platform for music",
+                    Version = "1.0.0"
+                });
+            });
+
+
 
             builder.Services.AddDbContext<AppDbContext>(optionsX => optionsX.UseSqlServer(ConnectionStringVar));
             builder.Services.AddScoped<IUser, UsersServices>();
@@ -19,8 +33,20 @@ namespace Tunify_Platform
             builder.Services.AddScoped<ISongs, SongsServices>();
             builder.Services.AddScoped<IArtists, ArtistsServices>();
 
+
+
+
+
             var app = builder.Build();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tunify API V1");
+                c.RoutePrefix = string.Empty;
+            });
+
+            app.MapControllers();
             app.MapGet("/", () => "Hello World!");
 
             app.Run();
