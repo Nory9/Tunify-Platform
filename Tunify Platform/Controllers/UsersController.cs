@@ -35,9 +35,7 @@ namespace Tunify_Platform.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-          var user= _user.GetUser(id);  
-
-            return Ok(user);
+            return await _user.GetUser(id);
         }
 
         // PUT: api/Users/5
