@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Data;
+using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
 using Tunify_Platform.Repositories.Services;
 
@@ -11,8 +13,12 @@ namespace Tunify_Platform
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
+
             var ConnectionStringVar = builder.Configuration.GetConnectionString("DefaultConnection");
 
+            // Identity configuration  
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().
+                AddEntityFrameworkStores<AppDbContext>();
 
             //// configue swagger
             builder.Services.AddSwaggerGen(c =>
@@ -32,12 +38,15 @@ namespace Tunify_Platform
             builder.Services.AddScoped<IPlaylists, PlaylistsServices>();
             builder.Services.AddScoped<ISongs, SongsServices>();
             builder.Services.AddScoped<IArtists, ArtistsServices>();
-
+            builder.Services.AddScoped<IAccountU, AccountServices>();
 
 
 
 
             var app = builder.Build();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
