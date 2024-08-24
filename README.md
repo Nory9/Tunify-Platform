@@ -117,6 +117,15 @@ The `AppDbContext` class defines the entity sets for the application:
     - Ensured each controller receives its repository through constructor injection.
     - Allowed controllers to interact with the data access layer via the repository.
   
+ ## Authentication and Authorization
+
+### Authentication
+
+The Tunify Platform uses ASP.NET Core Identity for managing user authentication. Users can register, log in, and log out of the application. Passwords are securely hashed using Identity's built-in mechanisms, and users are uniquely identified by their username or email.
+
+### Authorization
+
+Authorization is handled using role-based access control (RBAC). The platform defines roles that restrict access to certain functionalities based on the user's role. For example, administrative tasks such as managing the music catalog are restricted to users with the "Admin" role, while regular users have access to playlist creation and music streaming functionalities.
 
 
 ## Swagger UI Integration
