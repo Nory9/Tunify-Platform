@@ -12,10 +12,13 @@ namespace Tunify_Platform.Repositories.Services
         private UserManager<ApplicationUser> _userManager; 
         private SignInManager<ApplicationUser> _signInManager;
 
-        public AccountServices(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private jwtTokenServices_ _jwtTokenService;
+
+        public AccountServices(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, jwtTokenServices_ jwtTokenServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _jwtTokenService = jwtTokenServices;
         }
 
         public async Task<AccountDTO> Login(string Name, string Password)
@@ -31,6 +34,8 @@ namespace Tunify_Platform.Repositories.Services
 
                     Name = user.UserName,
                     Id = user.Id,
+                    //Retrive Token after validation(LogIn) [Minutes for testing its shoukd be hours]
+                    Token = await _jwtTokenService.GenerateToken(user, System.TimeSpan.FromMinutes(8))
 
                 };
             }
@@ -55,13 +60,15 @@ namespace Tunify_Platform.Repositories.Services
 
             if (result.Succeeded) {
 
-                return new AccountDTO
+                await _userManager.AddToRolesAsync(user, registerDTO.Role);
+                return new AccountDTO()
                 {
-
+                    Id = user.Id,
                     Name = user.UserName,
-                    Id = user.Id
+                    Role = await _userManager.GetRolesAsync(user)
+
                 };
-            
+
             }
 
             foreach (var error in result.Errors) {

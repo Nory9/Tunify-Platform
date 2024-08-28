@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform.Controllers
 {
+    [Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class PlaylistsController : ControllerBase

@@ -161,7 +161,39 @@ namespace Tunify_Platform.Data
                     Subscription_ID = 4,
                 }
             );
+
+            seedRole(modelBuilder, "Admin");
+            seedRole(modelBuilder, "User");
         }
+
+
+        private void seedRole(ModelBuilder modelBuilder, string roleName, params string[] permissions)
+        {
+            // Seed the role
+            var role = new IdentityRole
+            {
+                Id = roleName.ToLower(),
+                Name = roleName,
+                NormalizedName = roleName.ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+
+            // Add claims for the role if any permissions are provided
+            if (permissions != null && permissions.Length > 0)
+            {
+                var roleClaims = permissions.Select(permission => new IdentityRoleClaim<string>
+                {
+                    RoleId = role.Id,
+                    ClaimType = "Permission",
+                    ClaimValue = permission
+                }).ToArray();
+
+                modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
+            }
+        }
+
     }
 }
 
